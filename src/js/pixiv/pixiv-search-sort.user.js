@@ -6,7 +6,7 @@
 // @description:zh-CN Pixiv搜索结果按收藏数从大到小排序，适配[TS] Pixiv++ V3
 // @icon         https://www.pixiv.net/favicon.ico
 // @author       olOwOlo
-// @@homepage    https://gist.github.com/olOwOlo
+// @@homepage    https://gist.github.com/olOwOlo/67506c622f96dc14ed53314083afe9a8
 // @match        *://www.pixiv.net/search.php?*
 // @run-at       document-start
 // @grant        none
