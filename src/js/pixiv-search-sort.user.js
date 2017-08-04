@@ -1,11 +1,12 @@
 // ==UserScript==
 // @name         Pixiv搜索结果排序 | Pixiv search sort
-// @namespace    http://tampermonkey.net/
+// @namespace    https://olowolo.com
 // @version      0.1.0
-// @description  Pixiv搜索结果按收藏数从大到小排序
+// @description  Pixiv search result sort by bookmark count.
+// @description:zh-CN Pixiv搜索结果按收藏数从大到小排序，适配[TS] Pixiv++ V3
 // @icon         https://www.pixiv.net/favicon.ico
 // @author       olOwOlo
-// @homepage     https://olowolo.com
+// @@homepage    https://gist.github.com/olOwOlo
 // @match        *://www.pixiv.net/search.php?*
 // @run-at       document-start
 // @grant        none
@@ -41,7 +42,7 @@
     return typeof bookmarkCount === 'undefined' ? 0 : Number(bookmarkCount.text)
   }
 
-  /* ===================   适配 Pixiv++ V3   =================== */
+  /* ===================   适配 [TS] Pixiv++ V3   =================== */
   let [done] = [0]
 
   const origOpen = XMLHttpRequest.prototype.open
