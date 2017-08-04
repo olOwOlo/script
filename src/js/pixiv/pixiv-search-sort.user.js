@@ -2,10 +2,10 @@
 // @name         Pixiv搜索结果排序 | Pixiv search sort
 // @namespace    https://olowolo.com
 // @version      0.1.0
-// @description  Pixiv search result sort by bookmark count.
-// @description:zh-CN Pixiv搜索结果按收藏数从大到小排序，适配[TS] Pixiv++ V3
+// @description  Pixiv搜索结果按收藏数从大到小排序，适配[TS] Pixiv++ V3 | Pixiv search result sort by bookmark count.
 // @icon         https://www.pixiv.net/favicon.ico
 // @author       olOwOlo
+// @license      MIT
 // @@homepage    https://gist.github.com/olOwOlo/67506c622f96dc14ed53314083afe9a8
 // @match        *://www.pixiv.net/search.php?*
 // @run-at       document-start
