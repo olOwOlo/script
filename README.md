@@ -12,7 +12,7 @@
 
 ![列表形02](./taobao-search-plus/img/taobao03.png)
 
-[GreasyFork安装地址](https://greasyfork.org/zh-CN/scripts/32140-淘宝搜索plus)
+[GreasyFork安装地址](https://greasyfork.org/zh-CN/scripts/32140-淘宝搜索plus-taobao-search-plus)
 
 [./taobao-search-plus](./taobao-search-plus)
 
