@@ -1,0 +1,246 @@
+/*****************************************************************/
+/********************** taobao-plus-setting **********************/
+/***************************(bootstrap)***************************/
+.taobao-plus-container {
+    -webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    box-sizing: border-box;
+    font-family: "Helvetica Neue",Helvetica,Arial,sans-serif;
+    font-size: 14px;
+    line-height: 1.42857143;
+    color: #333;
+    -webkit-tap-highlight-color: rgba(0,0,0,0);
+    -webkit-text-size-adjust: 100%;
+    -ms-text-size-adjust: 100%;
+}
+.taobao-plus-container.modal-open {
+    overflow: hidden;
+}
+.taobao-plus-container .modal-open .modal {
+    overflow-x: hidden;
+    overflow-y: auto;
+}
+.taobao-plus-container .fade.in {
+    opacity: 1;
+}
+.taobao-plus-container .modal {
+    position: fixed;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    z-index: 1050;
+    overflow: hidden;
+    -webkit-overflow-scrolling: touch;
+    outline: 0;
+}
+.taobao-plus-container .fade {
+    opacity: 0;
+    -webkit-transition: opacity .15s linear;
+    -o-transition: opacity .15s linear;
+    transition: opacity .15s linear;
+}
+.taobao-plus-container .modal.in .modal-dialog {
+    -webkit-transform: translate(0,0);
+    -ms-transform: translate(0,0);
+    -o-transform: translate(0,0);
+    transform: translate(0,0);
+}
+.taobao-plus-container .modal.fade .modal-dialog {
+    -webkit-transition: -webkit-transform .3s ease-out;
+    -o-transition: -o-transform .3s ease-out;
+    transition: transform .3s ease-out;
+}
+.taobao-plus-container .modal-dialog {
+    position: relative;
+    width: auto;
+    margin: 10px;
+}
+.taobao-plus-container .modal-content {
+    position: relative;
+    background-color: #fff;
+    -webkit-background-clip: padding-box;
+    background-clip: padding-box;
+    border: 1px solid rgba(0,0,0,.2);
+    border-radius: 6px;
+    outline: 0;
+    -webkit-box-shadow: 0 3px 9px rgba(0,0,0,.5);
+    box-shadow: 0 3px 9px rgba(0,0,0,.5);
+}
+.taobao-plus-container .modal-header {
+    padding: 15px;
+    border-bottom: 1px solid #e5e5e5;
+    -webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    box-sizing: border-box;
+    content: " ";
+    clear: both;
+}
+.taobao-plus-container .modal-title {
+    margin: 0;
+    line-height: 1.42857143;
+}
+.taobao-plus-container h4 {
+    font-size: 18px;
+    font-family: inherit;
+    font-weight: 500;
+    color: inherit;
+}
+.taobao-plus-container p {
+    margin: 0 0 10px;
+}
+.taobao-plus-container .modal-body {
+    position: relative;
+    padding: 15px;
+}
+.taobao-plus-container .radio {
+    position: relative;
+    display: block;
+    margin-top: 10px;
+    margin-bottom: 10px;
+}
+.taobao-plus-container .radio+.radio {
+    margin-top: -5px;
+}
+.taobao-plus-container .radio label {
+    min-height: 20px;
+    padding-left: 20px;
+    margin-bottom: 0;
+    font-weight: 400;
+    cursor: pointer;
+}
+.taobao-plus-container label {
+    display: inline-block;
+    max-width: 100%;
+    margin-bottom: 5px;
+    font-weight: 700;
+}
+.taobao-plus-container .radio input[type=radio] {
+    position: absolute;
+    margin-top: 4px\9;
+    margin-left: -20px;
+}
+.taobao-plus-container input[type=radio] {
+    margin: 4px 0 0;
+    margin-top: 1px\9;
+    line-height: normal;
+}
+.taobao-plus-container input[type=radio] {
+    -webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    box-sizing: border-box;
+    padding: 0;
+}
+.taobao-plus-container .btn {
+    display: inline-block;
+    margin-right: 10px;
+    padding: 6px 12px;
+    margin-bottom: 0;
+    font-size: 14px;
+    font-weight: 400;
+    line-height: 1.42857143;
+    text-align: center;
+    white-space: nowrap;
+    vertical-align: middle;
+    -ms-touch-action: manipulation;
+    touch-action: manipulation;
+    cursor: pointer;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+    background-image: none;
+    border: 1px solid transparent;
+    border-radius: 4px;
+}
+.taobao-plus-container .btn-default {
+    color: #333;
+    background-color: #fff;
+    border-color: #ccc;
+}
+.taobao-plus-container .btn-success {
+    color: #fff;
+    background-color: #5cb85c;
+    border-color: #4cae4c;
+}
+.taobao-plus-container hr {
+    height: 0;
+    -webkit-box-sizing: content-box;
+    -moz-box-sizing: content-box;
+    box-sizing: content-box;
+    margin-top: 20px;
+    margin-bottom: 20px;
+    border: 0;
+    border-top: 1px solid #eee;
+}
+@media (min-width: 768px){
+    .taobao-plus-container .modal-dialog {
+        width: 600px;
+        margin: 30px auto;
+    }
+    .taobao-plus-container .modal-sm {
+        width: 300px;
+    }
+    .taobao-plus-container .modal-content {
+        -webkit-box-shadow: 0 5px 15px rgba(0,0,0,.5);
+        box-shadow: 0 5px 15px rgba(0,0,0,.5);
+    }
+}
+
+/*******************************************************************/
+/********************** taobao-plus-shop-info **********************/
+/*******************************************************************/
+.my-shopinfo-grid {
+    min-width: auto !important;
+    padding: 0 5px 5px !important;
+    border: unset !important;
+    -webkit-box-shadow: unset !important;
+    box-shadow: unset !important;
+}
+.my-shopinfo-grid .score-box {
+    margin-left: 5px;
+    margin-top: auto !important;
+    border-top: unset !important;
+    padding: unset !important;
+}
+.my-shopinfo-list {
+    float: left;
+    min-width: auto !important;
+    padding: 5px !important;
+    border: unset !important;
+    -webkit-box-shadow: unset !important;
+    box-shadow: unset !important;
+}
+.my-shopinfo-list .score-box {
+    margin-top: auto !important;
+    border-top: unset !important;
+    padding: unset !important;
+}
+.m-itemlist .items .item.J_MouserOnverReq {
+    height: 425px !important
+}
+
+@media (max-width: 1250px){
+    .my-shopinfo-grid .score {
+        text-align: center
+    }
+    .my-shopinfo-grid .score .percent {
+        float: none !important
+    }
+    .m-itemlist .items .item.J_MouserOnverReq {
+        height: 390px !important
+    }
+}
+
+
+/* taobao origin css */
+.m-widget-shopinfo .score{margin:3px 0;height:18px;white-space:nowrap}
+.m-widget-shopinfo .score .text{float:left;width:96px;color:#3c3c3c}
+.m-widget-shopinfo .score .highlight{float:left;padding:0 3px;color:#fff}
+.m-widget-shopinfo .score .percent{float:left;width:52px;text-align:right}
+.m-widget-shopinfo .morethan .highlight{background:#f40}
+.m-widget-shopinfo .morethan .percent{color:#f40}
+.m-widget-shopinfo .equalthan .highlight{background:#f40}
+.m-widget-shopinfo .equalthan .percent{color:#f40}
+.m-widget-shopinfo .lessthan .highlight{background:#00ba97}
+.m-widget-shopinfo .lessthan .percent{color:#00ba97}

@@ -1,15 +1,18 @@
 // ==UserScript==
-// @name         Pixiv搜索结果排序 | Pixiv search sort
-// @namespace    https://olowolo.com
-// @version      0.1.0
-// @description  Pixiv搜索结果按收藏数从大到小排序，适配[TS] Pixiv++ V3 | Pixiv search result sort by bookmark count.
-// @icon         https://www.pixiv.net/favicon.ico
-// @author       olOwOlo
-// @license      MIT
-// @@homepage    https://gist.github.com/olOwOlo/67506c622f96dc14ed53314083afe9a8
-// @match        *://www.pixiv.net/search.php?*
-// @run-at       document-start
-// @grant        none
+// @name                Pixiv搜索结果排序 | Pixiv search sort
+// @name:zh-TW          Pixiv搜索結果排序 | Pixiv search sort
+// @description         Pixiv搜索结果按收藏数从大到小排序，适配[TS] Pixiv++ V3 | Pixiv search result sort by bookmark count.
+// @description:zh-TW   Pixiv搜索結果按收藏數從大到小排序，適配[TS] Pixiv++ V3 | Pixiv search result sort by bookmark count.
+// @icon                https://www.pixiv.net/favicon.ico
+// @version             0.1.0
+// @author              olOwOlo
+// @namespace           https://olowolo.com
+// @homepage            https://github.com/olOwOlo/script/tree/master/pixiv-search-sort
+// @supportURL          https://github.com/olOwOlo/script
+// @license             MIT
+// @match               *://www.pixiv.net/search.php?*
+// @run-at              document-start
+// @grant               none
 // ==/UserScript==
 //
 /*

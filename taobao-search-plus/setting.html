@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Title</title>
+</head>
+<body>
+<div class="taobao-plus-container modal-open">
+  <div class="modal fade in" id="taobao-plus-modal" tabindex="-1" role="dialog" aria-labelledby="settingModalLabel">
+    <div class="modal-dialog modal-sm" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h4 class="modal-title">搜索设置</h4>
+        </div>
+        <div class="modal-body">
+          <p>默认排序规则</p>
+          <div class="radio"><label><input type="radio" name="sortOption" value="default">默认（综合排序）</label></div>
+          <div class="radio"><label><input type="radio" name="sortOption" value="renqi-desc">人气从高到低</label></div>
+          <div class="radio"><label><input type="radio" name="sortOption" value="sale-desc">销量从高到低</label></div>
+          <div class="radio"><label><input type="radio" name="sortOption" value="credit-desc">信用从高到低</label></div>
+          <div class="radio"><label><input type="radio" name="sortOption" value="price-asc">价格从低到高</label></div>
+          <div class="radio"><label><input type="radio" name="sortOption" value="price-desc">价格从高到低</label></div>
+          <div class="radio"><label><input type="radio" name="sortOption" value="total-asc">总价从低到高</label></div>
+          <div class="radio"><label><input type="radio" name="sortOption" value="total-desc">总价从高到低</label></div>
+          <hr/>
+          <p>默认显示风格</p>
+          <div class="radio"><label><input type="radio" name="styleOption" value="grid">默认（大部分情况下为网格）</label></div>
+          <div class="radio"><label><input type="radio" name="styleOption" value="list">列表</label></div>
+          <hr/>
+          <div style="text-align:right">
+            <button type="button" id="submit" class="btn btn-success"> 确定</button>
+            <button type="button" id="cancel" class="btn btn-default"> 取消</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+</body>
+</html>
