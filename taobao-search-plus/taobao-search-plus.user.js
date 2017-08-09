@@ -1,12 +1,12 @@
 // ==UserScript==
+// @name                taobao search plus
 // @name:zh-CN          淘宝搜索PLUS
 // @name:zh-TW          淘寶搜索PLUS
-// @name                taobao search plus
+// @description         Auto load shop information, customize the default sort order and ui style(gird or list).
 // @description:zh-CN   淘宝搜索页面自动加载店铺评分，无需鼠标悬停查看！快速查看店铺评分以及同行对比！ | 搜索页面自定义排序方式与显示方式
 // @description:zh-TW   淘寶搜索頁面自動加載店鋪評分，無需鼠標懸停查看！快速查看店鋪評分以及同行對比！ | 搜索頁面自定義排序方式與顯示方式
-// @description         Auto load shop information, customize the default sort order and ui style(gird or list).
 // @icon                https://www.taobao.com/favicon.ico
-// @version             1.0.3
+// @version             1.0.0
 // @author              olOwOlo
 // @namespace           https://olowolo.com
 // @homepage            https://github.com/olOwOlo/script/tree/master/taobao-search-plus
@@ -24,107 +24,109 @@
  * Copyright (c) 2017 olOwOlo
  * Released under the MIT License.
  */
-;(function () {
+(function () {
   'use strict'
 
-  let globalSort = typeof GM_getValue('sort') === 'undefined' ? 'default' : GM_getValue('sort')
-  let globalStyle = typeof GM_getValue('style') === 'undefined' ? 'grid' : GM_getValue('style')
-  myLog(`[sort = ${GM_getValue('sort')}, style = ${GM_getValue('style')}]`)
-
-  function parseArgument () {
-    const argvMap = new Map()
-    const argvArray = location.search.substr(1).split('&')
-    for (const string of argvArray) {
-      argvMap.set(...string.split('='))
-    }
-    return argvMap
+  const DEBUG = false
+  function myLog (str) {
+    if (DEBUG) window.console.log(str)
   }
 
-  const argv = parseArgument()
+  (function () {
+    let globalSort = typeof GM_getValue('sort') === 'undefined' ? 'default' : GM_getValue('sort')
+    let globalStyle = typeof GM_getValue('style') === 'undefined' ? 'grid' : GM_getValue('style')
+    myLog(`[sort = ${GM_getValue('sort')}, style = ${GM_getValue('style')}]`)
 
-  let href = location.href
-  if (globalSort !== 'default' && typeof argv.get('sort') === 'undefined') {
-    href += `&sort=${globalSort}`
-  }
-  if (globalStyle !== 'grid' && typeof argv.get('style') === 'undefined') {
-    href += `&style=${globalStyle}`
-  }
-  if (href !== location.href) {
-    myLog(`redirect... Old href = [${location.href}]`)
-    location.href = href
-  }
-
-  const sortOption = ['default', 'renqi-desc', 'sale-desc', 'credit-desc', 'price-asc', 'price-desc', 'total-asc', 'total-desc']
-  const styleOption = ['grid', 'list']
-
-  class Setting {
-    // 传入数据{sort: sort, style: style}为有效值
-    constructor (setting) {
-      this.sort = setting.sort
-      this.style = setting.style
+    function parseArgument () {
+      const argvMap = new Map()
+      const argvArray = location.search.substr(1).split('&')
+      for (const string of argvArray) {
+        argvMap.set(...string.split('='))
+      }
+      return argvMap
     }
 
-    toString () {
-      return `[sort = ${this.sort}, style = ${this.style}]`
+    const argv = parseArgument()
+
+    let href = location.href
+    if (globalSort !== 'default' && typeof argv.get('sort') === 'undefined') {
+      href += `&sort=${globalSort}`
+    }
+    if (globalStyle !== 'grid' && typeof argv.get('style') === 'undefined') {
+      href += `&style=${globalStyle}`
+    }
+    if (href !== location.href) {
+      myLog(`redirect... Old href = [${location.href}]`)
+      location.href = href
     }
 
-    createUI () {
-      const userInterface = document.createElement('div')
-      userInterface.innerHTML = '<div class="taobao-plus-container modal-open"><div class="modal fade in" id="taobao-plus-modal" tabindex="-1" role="dialog" aria-labelledby="settingModalLabel"><div class="modal-dialog modal-sm" role="document"><div class="modal-content"><div class="modal-header"><h4 class="modal-title">搜索设置</h4></div><div class="modal-body"><p>默认排序规则</p><div class="radio"><label><input type="radio" name="sortOption" value="default">默认（综合排序）</label></div><div class="radio"><label><input type="radio" name="sortOption" value="renqi-desc">人气从高到低</label></div><div class="radio"><label><input type="radio" name="sortOption" value="sale-desc">销量从高到低</label></div><div class="radio"><label><input type="radio" name="sortOption" value="credit-desc">信用从高到低</label></div><div class="radio"><label><input type="radio" name="sortOption" value="price-asc">价格从低到高</label></div><div class="radio"><label><input type="radio" name="sortOption" value="price-desc">价格从高到低</label></div><div class="radio"><label><input type="radio" name="sortOption" value="total-asc">总价从低到高</label></div><div class="radio"><label><input type="radio" name="sortOption" value="total-desc">总价从高到低</label></div><hr/><p>默认显示风格</p><div class="radio"><label><input type="radio" name="styleOption" value="grid">默认（大部分情况下为网格）</label></div><div class="radio"><label><input type="radio" name="styleOption" value="list">列表</label></div><hr/><div style="text-align:right"><button type="button" id="submit" class="btn btn-success"> 确定</button><button type="button" id="cancel" class="btn btn-default"> 取消</button></div></div></div></div></div> '
-      document.body.appendChild(userInterface)
-      // display: none
-      this.modal = document.getElementById('taobao-plus-modal')
-      this.modal.style.display = 'none'
-      // init checked
-      document.getElementsByName('sortOption')[sortOption.indexOf(this.sort)].checked = true
-      document.getElementsByName('styleOption')[styleOption.indexOf(this.style)].checked = true
+    const sortOption = ['default', 'renqi-desc', 'sale-desc', 'credit-desc', 'price-asc', 'price-desc', 'total-asc', 'total-desc']
+    const styleOption = ['grid', 'list']
 
-      /** return checked value */
-      function getRadioValue (radioName) {
-        const elements = document.getElementsByName(radioName);
-        for (const element of elements) {
-          if (element.checked) return element.value
+    class Setting {
+      // 传入数据{sort: sort, style: style}为有效值
+      constructor (setting) {
+        this.sort = setting.sort
+        this.style = setting.style
+      }
+
+      toString () {
+        return `[sort = ${this.sort}, style = ${this.style}]`
+      }
+
+      createUI () {
+        const userInterface = document.createElement('div')
+        userInterface.innerHTML = '<div class="taobao-plus-container modal-open"><div class="modal fade in" id="taobao-plus-modal" tabindex="-1" role="dialog" aria-labelledby="settingModalLabel"><div class="modal-dialog modal-sm" role="document"><div class="modal-content"><div class="modal-header"><h4 class="modal-title">搜索设置</h4></div><div class="modal-body"><p>默认排序规则</p><div class="radio"><label><input type="radio" name="sortOption" value="default">默认（综合排序）</label></div><div class="radio"><label><input type="radio" name="sortOption" value="renqi-desc">人气从高到低</label></div><div class="radio"><label><input type="radio" name="sortOption" value="sale-desc">销量从高到低</label></div><div class="radio"><label><input type="radio" name="sortOption" value="credit-desc">信用从高到低</label></div><div class="radio"><label><input type="radio" name="sortOption" value="price-asc">价格从低到高</label></div><div class="radio"><label><input type="radio" name="sortOption" value="price-desc">价格从高到低</label></div><div class="radio"><label><input type="radio" name="sortOption" value="total-asc">总价从低到高</label></div><div class="radio"><label><input type="radio" name="sortOption" value="total-desc">总价从高到低</label></div><hr/><p>默认显示风格</p><div class="radio"><label><input type="radio" name="styleOption" value="grid">默认（大部分情况下为网格）</label></div><div class="radio"><label><input type="radio" name="styleOption" value="list">列表</label></div><hr/><div style="text-align:right"><button type="button" id="submit" class="btn btn-success"> 确定</button><button type="button" id="cancel" class="btn btn-default"> 取消</button></div></div></div></div></div> '
+        document.body.appendChild(userInterface)
+        // display: none
+        this.modal = document.getElementById('taobao-plus-modal')
+        this.modal.style.display = 'none'
+        // init checked
+        document.getElementsByName('sortOption')[sortOption.indexOf(this.sort)].checked = true
+        document.getElementsByName('styleOption')[styleOption.indexOf(this.style)].checked = true
+
+        /** return checked value */
+        function getRadioValue (radioName) {
+          const elements = document.getElementsByName(radioName);
+          for (const element of elements) {
+            if (element.checked) return element.value
+          }
+        }
+        // bind event
+        document.getElementById('cancel').onclick = () => this.toggle()
+        document.getElementById('submit').onclick = () => {
+          const sort = getRadioValue('sortOption')
+          const style = getRadioValue('styleOption')
+          GM_setValue('sort', sort)
+          globalSort = sort
+          GM_setValue('style', style)
+          globalStyle = style
+          this.toggle()
         }
       }
-      // bind event
-      document.getElementById('cancel').onclick = () => this.toggle()
-      document.getElementById('submit').onclick = () => {
-        const sort = getRadioValue('sortOption')
-        const style = getRadioValue('styleOption')
-        GM_setValue('sort', sort)
-        globalSort = sort
-        GM_setValue('style', style)
-        globalStyle = style
-        this.toggle()
+
+      static isCreated () {
+        return document.getElementById('taobao-plus-modal') !== null
       }
-    }
 
-    static isCreated () {
-      return document.getElementById('taobao-plus-modal') !== null
-    }
-
-    toggle () {
-      if (!Setting.isCreated()) {
-        GM_addStyle('.taobao-plus-container{-webkit-box-sizing:border-box;-moz-box-sizing:border-box;box-sizing:border-box;font-family:"Helvetica Neue",Helvetica,Arial,sans-serif;font-size:14px;line-height:1.42857143;color:#333;-webkit-tap-highlight-color:rgba(0,0,0,0);-webkit-text-size-adjust:100%;-ms-text-size-adjust:100%;}.taobao-plus-container.modal-open{overflow:hidden;}.taobao-plus-container .modal-open .modal{overflow-x:hidden;overflow-y:auto;}.taobao-plus-container .fade.in{opacity:1;}.taobao-plus-container .modal{position:fixed;top:0;right:0;bottom:0;left:0;z-index:1050;overflow:hidden;-webkit-overflow-scrolling:touch;outline:0;}.taobao-plus-container .fade{opacity:0;-webkit-transition:opacity .15s linear;-o-transition:opacity .15s linear;transition:opacity .15s linear;}.taobao-plus-container .modal.in .modal-dialog{-webkit-transform:translate(0,0);-ms-transform:translate(0,0);-o-transform:translate(0,0);transform:translate(0,0);}.taobao-plus-container .modal.fade .modal-dialog{-webkit-transition:-webkit-transform .3s ease-out;-o-transition:-o-transform .3s ease-out;transition:transform .3s ease-out;}.taobao-plus-container .modal-dialog{position:relative;width:auto;margin:10px;}.taobao-plus-container .modal-content{position:relative;background-color:#fff;-webkit-background-clip:padding-box;background-clip:padding-box;border:1px solid rgba(0,0,0,.2);border-radius:6px;outline:0;-webkit-box-shadow:0 3px 9px rgba(0,0,0,.5);box-shadow:0 3px 9px rgba(0,0,0,.5);}.taobao-plus-container .modal-header{padding:15px;border-bottom:1px solid #e5e5e5;-webkit-box-sizing:border-box;-moz-box-sizing:border-box;box-sizing:border-box;content:" ";clear:both;}.taobao-plus-container .modal-title{margin:0;line-height:1.42857143;}.taobao-plus-container h4{font-size:18px;font-family:inherit;font-weight:500;color:inherit;}.taobao-plus-container p{margin:0 0 10px;}.taobao-plus-container .modal-body{position:relative;padding:15px;}.taobao-plus-container .radio{position:relative;display:block;margin-top:10px;margin-bottom:10px;}.taobao-plus-container .radio+.radio{margin-top:-5px;}.taobao-plus-container .radio label{min-height:20px;padding-left:20px;margin-bottom:0;font-weight:400;cursor:pointer;}.taobao-plus-container label{display:inline-block;max-width:100%;margin-bottom:5px;font-weight:700;}.taobao-plus-container .radio input[type=radio]{position:absolute;margin-top:4px\\9;margin-left:-20px;}.taobao-plus-container input[type=radio]{margin:4px 0 0;margin-top:1px\\9;line-height:normal;}.taobao-plus-container input[type=radio]{-webkit-box-sizing:border-box;-moz-box-sizing:border-box;box-sizing:border-box;padding:0;}.taobao-plus-container .btn{display:inline-block;margin-right: 10px;padding:6px 12px;margin-bottom:0;font-size:14px;font-weight:400;line-height:1.42857143;text-align:center;white-space:nowrap;vertical-align:middle;-ms-touch-action:manipulation;touch-action:manipulation;cursor:pointer;-webkit-user-select:none;-moz-user-select:none;-ms-user-select:none;user-select:none;background-image:none;border:1px solid transparent;border-radius:4px;}.taobao-plus-container .btn-default{color:#333;background-color:#fff;border-color:#ccc;}.taobao-plus-container .btn-success{color:#fff;background-color:#5cb85c;border-color:#4cae4c;}.taobao-plus-container hr{height:0;-webkit-box-sizing:content-box;-moz-box-sizing:content-box;box-sizing:content-box;margin-top:20px;margin-bottom:20px;border:0;border-top:1px solid #eee;}@media (min-width:768px){.taobao-plus-container .modal-dialog{width:600px;margin:30px auto;}.taobao-plus-container .modal-sm{width:300px;}.taobao-plus-container .modal-content{-webkit-box-shadow:0 5px 15px rgba(0,0,0,.5);box-shadow:0 5px 15px rgba(0,0,0,.5);}}')
-        this.createUI(this.sort, this.style)
+      toggle () {
+        if (!Setting.isCreated()) {
+          GM_addStyle('.taobao-plus-container{-webkit-box-sizing:border-box;-moz-box-sizing:border-box;box-sizing:border-box;font-family:"Helvetica Neue",Helvetica,Arial,sans-serif;font-size:14px;line-height:1.42857143;color:#333;-webkit-tap-highlight-color:rgba(0,0,0,0);-webkit-text-size-adjust:100%;-ms-text-size-adjust:100%;}.taobao-plus-container.modal-open{overflow:hidden;}.taobao-plus-container .modal-open .modal{overflow-x:hidden;overflow-y:auto;}.taobao-plus-container .fade.in{opacity:1;}.taobao-plus-container .modal{position:fixed;top:0;right:0;bottom:0;left:0;z-index:1050;overflow:hidden;-webkit-overflow-scrolling:touch;outline:0;}.taobao-plus-container .fade{opacity:0;-webkit-transition:opacity .15s linear;-o-transition:opacity .15s linear;transition:opacity .15s linear;}.taobao-plus-container .modal.in .modal-dialog{-webkit-transform:translate(0,0);-ms-transform:translate(0,0);-o-transform:translate(0,0);transform:translate(0,0);}.taobao-plus-container .modal.fade .modal-dialog{-webkit-transition:-webkit-transform .3s ease-out;-o-transition:-o-transform .3s ease-out;transition:transform .3s ease-out;}.taobao-plus-container .modal-dialog{position:relative;width:auto;margin:10px;}.taobao-plus-container .modal-content{position:relative;background-color:#fff;-webkit-background-clip:padding-box;background-clip:padding-box;border:1px solid rgba(0,0,0,.2);border-radius:6px;outline:0;-webkit-box-shadow:0 3px 9px rgba(0,0,0,.5);box-shadow:0 3px 9px rgba(0,0,0,.5);}.taobao-plus-container .modal-header{padding:15px;border-bottom:1px solid #e5e5e5;-webkit-box-sizing:border-box;-moz-box-sizing:border-box;box-sizing:border-box;content:" ";clear:both;}.taobao-plus-container .modal-title{margin:0;line-height:1.42857143;}.taobao-plus-container h4{font-size:18px;font-family:inherit;font-weight:500;color:inherit;}.taobao-plus-container p{margin:0 0 10px;}.taobao-plus-container .modal-body{position:relative;padding:15px;}.taobao-plus-container .radio{position:relative;display:block;margin-top:10px;margin-bottom:10px;}.taobao-plus-container .radio+.radio{margin-top:-5px;}.taobao-plus-container .radio label{min-height:20px;padding-left:20px;margin-bottom:0;font-weight:400;cursor:pointer;}.taobao-plus-container label{display:inline-block;max-width:100%;margin-bottom:5px;font-weight:700;}.taobao-plus-container .radio input[type=radio]{position:absolute;margin-top:4px\\9;margin-left:-20px;}.taobao-plus-container input[type=radio]{margin:4px 0 0;margin-top:1px\\9;line-height:normal;}.taobao-plus-container input[type=radio]{-webkit-box-sizing:border-box;-moz-box-sizing:border-box;box-sizing:border-box;padding:0;}.taobao-plus-container .btn{display:inline-block;margin-right: 10px;padding:6px 12px;margin-bottom:0;font-size:14px;font-weight:400;line-height:1.42857143;text-align:center;white-space:nowrap;vertical-align:middle;-ms-touch-action:manipulation;touch-action:manipulation;cursor:pointer;-webkit-user-select:none;-moz-user-select:none;-ms-user-select:none;user-select:none;background-image:none;border:1px solid transparent;border-radius:4px;}.taobao-plus-container .btn-default{color:#333;background-color:#fff;border-color:#ccc;}.taobao-plus-container .btn-success{color:#fff;background-color:#5cb85c;border-color:#4cae4c;}.taobao-plus-container hr{height:0;-webkit-box-sizing:content-box;-moz-box-sizing:content-box;box-sizing:content-box;margin-top:20px;margin-bottom:20px;border:0;border-top:1px solid #eee;}@media (min-width:768px){.taobao-plus-container .modal-dialog{width:600px;margin:30px auto;}.taobao-plus-container .modal-sm{width:300px;}.taobao-plus-container .modal-content{-webkit-box-shadow:0 5px 15px rgba(0,0,0,.5);box-shadow:0 5px 15px rgba(0,0,0,.5);}}')
+          this.createUI(this.sort, this.style)
+        }
+        this.modal.style.display === 'none'
+          ? this.modal.style.display = 'block'
+          : this.modal.style.display = 'none'
       }
-      this.modal.style.display === 'none'
-        ? this.modal.style.display = 'block'
-        : this.modal.style.display = 'none'
+
     }
 
-  }
-
-  let settingEntry = null
-  GM_registerMenuCommand('淘宝搜索PLUS设置', () => {
-    if (settingEntry === null) settingEntry = new Setting({sort: globalSort, style: globalStyle})
-    settingEntry.toggle()
-  })
-
-})()
-
-;(function () {
-  'use strict'
+    let settingEntry = null
+    GM_registerMenuCommand('淘宝搜索PLUS设置', () => {
+      if (settingEntry === null) settingEntry = new Setting({sort: globalSort, style: globalStyle})
+      settingEntry.toggle()
+    })
+  })()
 
   document.addEventListener("DOMContentLoaded", () => {
     myLog('The taobao-search-load-shop-info scrip start.')
@@ -321,8 +323,4 @@
 
   })
 
-  const DEBUG = false
-  function myLog (str) {
-    if (DEBUG) window.console.log(str)
-  }
 })()
