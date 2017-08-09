@@ -8,11 +8,11 @@
 
 ![安装脚本前后对比](./taobao-search-plus/img/taobao01.jpg)
 
-![列表形](./taobao-search-plus/img/taobao02.png)
+![列表形01](./taobao-search-plus/img/taobao02.png)
 
 ![列表形02](./taobao-search-plus/img/taobao03.png)
 
-[GreasyFork安装地址](https://greasyfork.org/zh-CN/users/146258-olowolo)
+[GreasyFork安装地址](https://greasyfork.org/zh-CN/scripts/32140-淘宝搜索plus)
 
 [./taobao-search-plus](./taobao-search-plus)
 

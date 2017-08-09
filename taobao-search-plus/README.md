@@ -9,7 +9,7 @@
 
 ![列表形02](https://raw.githubusercontent.com/olOwOlo/script/master/taobao-search-plus/img/taobao03.png)
 
-[GreasyFork安装地址](https://greasyfork.org/zh-CN/users/146258-olowolo)
+[GreasyFork安装地址](https://greasyfork.org/zh-CN/scripts/32140-淘宝搜索plus)
 
 Github [https://github.com/olOwOlo/script/tree/master/taobao-search-plus](https://github.com/olOwOlo/script/tree/master/taobao-search-plus)
 ## Licence:
