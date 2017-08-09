@@ -1,12 +1,12 @@
 // ==UserScript==
-// @name                taobao search plus
 // @name:zh-CN          淘宝搜索PLUS
 // @name:zh-TW          淘寶搜索PLUS
-// @description         Auto load shop information, customize the default sort order and ui style(gird or list).
+// @name                taobao search plus
 // @description:zh-CN   淘宝搜索页面自动加载店铺评分，无需鼠标悬停查看！快速查看店铺评分以及同行对比！ | 搜索页面自定义排序方式与显示方式
 // @description:zh-TW   淘寶搜索頁面自動加載店鋪評分，無需鼠標懸停查看！快速查看店鋪評分以及同行對比！ | 搜索頁面自定義排序方式與顯示方式
+// @description         Auto load shop information, customize the default sort order and ui style(gird or list).
 // @icon                https://www.taobao.com/favicon.ico
-// @version             1.0.0
+// @version             1.0.1
 // @author              olOwOlo
 // @namespace           https://olowolo.com
 // @homepage            https://github.com/olOwOlo/script/tree/master/taobao-search-plus
