@@ -4,7 +4,7 @@
 // @description         Pixiv搜索结果按收藏数从大到小排序，适配[TS] Pixiv++ V3 | Pixiv search result sort by bookmark count.
 // @description:zh-TW   Pixiv搜索結果按收藏數從大到小排序，適配[TS] Pixiv++ V3 | Pixiv search result sort by bookmark count.
 // @icon                https://www.pixiv.net/favicon.ico
-// @version             0.1.0
+// @version             0.2.0
 // @author              olOwOlo
 // @namespace           https://olowolo.com
 // @homepage            https://github.com/olOwOlo/script/tree/master/pixiv-search-sort
@@ -22,7 +22,7 @@
 (function () {
   'use strict'
 
-  document.addEventListener("DOMContentLoaded", () => sortInContainer(0))
+  document.addEventListener('DOMContentLoaded', () => sortInContainer(0))
 
   /**
    * sort in one page
@@ -48,11 +48,11 @@
   /* ===================   适配 [TS] Pixiv++ V3   =================== */
   let [done] = [0]
 
-  const origOpen = XMLHttpRequest.prototype.open
-  XMLHttpRequest.prototype.open = function () {
+  const origOpen = window.XMLHttpRequest.prototype.open
+  window.XMLHttpRequest.prototype.open = function () {
     this.addEventListener('load', function () {
       if (this.responseURL.includes('.net/search.php?')) {
-        window.console.log('Catch XMLHttpRequest[' + this.responseURL + ']')
+        console.log('Catch XMLHttpRequest[' + this.responseURL + ']')
         setTimeout(() => sortInContainer(++done), 1200)
       }
     })
@@ -95,11 +95,10 @@
       quickControl.appendChild(imgButton)
       imgButton.onclick = () => sortAll()
     } else {
-      window.console.log(`QuickControl Not Found. Rest time is ${rest}`)
+      console.log(`QuickControl Not Found. Rest time is ${rest}`)
       if (rest !== 0) setTimeout(() => tryBindSortButton(rest - 1), 1000)
     }
   }
 
-  document.addEventListener("DOMContentLoaded", () => tryBindSortButton())
-
+  document.addEventListener('DOMContentLoaded', () => tryBindSortButton())
 })()

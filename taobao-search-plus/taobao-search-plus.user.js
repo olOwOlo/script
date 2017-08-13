@@ -6,7 +6,7 @@
 // @description:zh-TW   淘寶搜索頁面自動加載店鋪評分，無需鼠標懸停查看！快速查看店鋪評分以及同行對比！ | 搜索頁面自定義排序方式與顯示方式
 // @description         Auto load shop information, customize the default sort order and ui style(gird or list).
 // @icon                https://www.taobao.com/favicon.ico
-// @version             1.0.1
+// @version             1.1.0
 // @author              olOwOlo
 // @namespace           https://olowolo.com
 // @homepage            https://github.com/olOwOlo/script/tree/master/taobao-search-plus
@@ -29,7 +29,7 @@
 
   const DEBUG = false
   function myLog (str) {
-    if (DEBUG) window.console.log(str)
+    if (DEBUG) console.log(str)
   }
 
   (function () {
@@ -39,7 +39,7 @@
 
     function parseArgument () {
       const argvMap = new Map()
-      const argvArray = location.search.substr(1).split('&')
+      const argvArray = window.location.search.substr(1).split('&')
       for (const string of argvArray) {
         argvMap.set(...string.split('='))
       }
@@ -48,16 +48,16 @@
 
     const argv = parseArgument()
 
-    let href = location.href
+    let href = window.location.href
     if (globalSort !== 'default' && typeof argv.get('sort') === 'undefined') {
       href += `&sort=${globalSort}`
     }
     if (globalStyle !== 'grid' && typeof argv.get('style') === 'undefined') {
       href += `&style=${globalStyle}`
     }
-    if (href !== location.href) {
-      myLog(`redirect... Old href = [${location.href}]`)
-      location.href = href
+    if (href !== window.location.href) {
+      myLog(`redirect... Old href = [${window.location.href}]`)
+      window.location.href = href
     }
 
     const sortOption = ['default', 'renqi-desc', 'sale-desc', 'credit-desc', 'price-asc', 'price-desc', 'total-asc', 'total-desc']
@@ -87,7 +87,7 @@
 
         /** return checked value */
         function getRadioValue (radioName) {
-          const elements = document.getElementsByName(radioName);
+          const elements = document.getElementsByName(radioName)
           for (const element of elements) {
             if (element.checked) return element.value
           }
@@ -118,7 +118,6 @@
           ? this.modal.style.display = 'block'
           : this.modal.style.display = 'none'
       }
-
     }
 
     let settingEntry = null
@@ -128,7 +127,9 @@
     })
   })()
 
-  document.addEventListener("DOMContentLoaded", () => {
+  // TODO handleTaskRunin
+  // TODO 局部页面切换时flag-last有时还会存在, 局部页面切换时更好的停止上一次tryLoad
+  document.addEventListener('DOMContentLoaded', () => {
     myLog('The taobao-search-load-shop-info scrip start.')
     setTimeout(tryLoad, 500)
 
@@ -170,7 +171,7 @@
      */
     async function tryLoad (rest = 10) {
       let {items, state} = getItemsAndPageState()
-      if (checkIfSafe() && typeof items !== 'undefined'){
+      if (checkIfSafe() && typeof items !== 'undefined') {
         const length = items.length
         myLog(`Find ${length} Items`)
 
@@ -227,7 +228,7 @@
      * @returns {boolean}
      */
     function checkIfSafe () {
-      return  document.getElementsByClassName('flag-last').length === 0
+      return document.getElementsByClassName('flag-last').length === 0
     }
 
     /**
@@ -254,11 +255,10 @@
         fakeElementQueue.push(item)
         return null
       } else {
-        window.console.log('无法从页面中获取店铺id...')
+        console.log('无法从页面中获取店铺id...')
         return null
       }
     }
-
 
     /**
      * 请求并创建店铺数据
@@ -267,9 +267,9 @@
      * @param state
      */
     function requestAndCreateShopInfo (sid, item, state) {
-      //https://s.taobao.com 2454747176
+      // https://s.taobao.com 2454747176
       fetch(`/api?sid=${sid}&callback=shopcard&app=api&m=get_shop_card`, {
-        method: "GET", mode: 'same-origin', credentials: 'same-origin'
+        method: 'GET', mode: 'same-origin', credentials: 'same-origin'
       }).then((response) => {
         if (response.status >= 200 && response.status < 300) return response
         const error = new Error(response.statusText)
@@ -280,7 +280,7 @@
       }).then((text) => {
         text = text.trim()
         createShopInfoElement(item, JSON.parse(text.slice(9, text.length - 2)), state)
-      }).catch(err => window.console.log(err))
+      }).catch(err => console.log(err))
     }
 
     /**
@@ -317,10 +317,8 @@
         : itemElement.getElementsByClassName('col col-5')[0].appendChild(shopInfoElement)
     }
 
-    function sleep(ms) {
+    function sleep (ms) {
       return new Promise(resolve => setTimeout(resolve, ms))
     }
-
   })
-
 })()

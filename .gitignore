@@ -2,3 +2,4 @@
 .idea/
 tampermonkey-user-js.iml
 /source/
+/node_modules/
