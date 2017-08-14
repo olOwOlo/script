@@ -4,7 +4,7 @@
 // @description         Pixiv搜索结果按收藏数从大到小排序，适配[TS] Pixiv++ V3 | Pixiv search result sort by bookmark count.
 // @description:zh-TW   Pixiv搜索結果按收藏數從大到小排序，適配[TS] Pixiv++ V3 | Pixiv search result sort by bookmark count.
 // @icon                https://www.pixiv.net/favicon.ico
-// @version             0.2.0
+// @version             0.3.0
 // @author              olOwOlo
 // @namespace           https://olowolo.com
 // @homepage            https://github.com/olOwOlo/script/tree/master/pixiv-search-sort
@@ -18,6 +18,9 @@
 /*
  * Copyright (c) 2017 olOwOlo
  * Released under the MIT License.
+ * ***********************
+ * ***** Release Note *****
+ * 0.3.0 - 为兼容最新ECMAScript标准，使用babel与webpack处理脚本，可读性更好的源码可于Github查看
  */
 (function () {
   'use strict'

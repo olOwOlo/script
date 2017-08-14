@@ -6,7 +6,7 @@
 // @description:zh-TW   淘寶搜索頁面自動加載店鋪評分，無需鼠標懸停查看！快速查看店鋪評分以及同行對比！ | 搜索頁面自定義排序方式與顯示方式
 // @description         Auto load shop information, customize the default sort order and ui style(gird or list).
 // @icon                https://www.taobao.com/favicon.ico
-// @version             1.1.0
+// @version             1.2.0
 // @author              olOwOlo
 // @namespace           https://olowolo.com
 // @homepage            https://github.com/olOwOlo/script/tree/master/taobao-search-plus
@@ -23,6 +23,9 @@
 /*
  * Copyright (c) 2017 olOwOlo
  * Released under the MIT License.
+ * ***********************
+ * ***** Release Note *****
+ * 1.2.0 - 为兼容最新ECMAScript标准，使用babel与webpack处理脚本，可读性更好的源码可于Github查看
  */
 (function () {
   'use strict'
