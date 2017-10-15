@@ -190,57 +190,44 @@
 /*******************************************************************/
 /********************** taobao-plus-shop-info **********************/
 /*******************************************************************/
-.my-shopinfo-grid {
-    min-width: auto !important;
-    padding: 0 5px 5px !important;
-    border: unset !important;
-    -webkit-box-shadow: unset !important;
-    box-shadow: unset !important;
+.my-shopinfo-grid,
+.my-shopinfo-alike {
+    padding: 0 5px 5px;
 }
-.my-shopinfo-grid .score-box {
+.my-shopinfo-grid .score-box,
+.my-shopinfo-alike .score-box{
     margin-left: 5px;
-    margin-top: auto !important;
-    border-top: unset !important;
-    padding: unset !important;
 }
-.my-shopinfo-list {
+.my-shopinfo-list,
+.my-shopinfo-same{
     float: left;
-    min-width: auto !important;
-    padding: 5px !important;
-    border: unset !important;
-    -webkit-box-shadow: unset !important;
-    box-shadow: unset !important;
-}
-.my-shopinfo-list .score-box {
-    margin-top: auto !important;
-    border-top: unset !important;
-    padding: unset !important;
+    padding: 5px;
 }
 .m-itemlist .items .item.J_MouserOnverReq {
-    height: 425px !important
+    height: 425px !important;
 }
 
 @media (max-width: 1250px){
     .my-shopinfo-grid .score {
-        text-align: center
+        text-align: center;
     }
     .my-shopinfo-grid .score .percent {
-        float: none !important
+        float: none !important;
     }
     .m-itemlist .items .item.J_MouserOnverReq {
-        height: 390px !important
+        height: 390px !important;
     }
 }
 
 
-/* taobao origin css */
-.m-widget-shopinfo .score{margin:3px 0;height:18px;white-space:nowrap}
-.m-widget-shopinfo .score .text{float:left;width:96px;color:#3c3c3c}
-.m-widget-shopinfo .score .highlight{float:left;padding:0 3px;color:#fff}
-.m-widget-shopinfo .score .percent{float:left;width:52px;text-align:right}
-.m-widget-shopinfo .morethan .highlight{background:#f40}
-.m-widget-shopinfo .morethan .percent{color:#f40}
-.m-widget-shopinfo .equalthan .highlight{background:#f40}
-.m-widget-shopinfo .equalthan .percent{color:#f40}
-.m-widget-shopinfo .lessthan .highlight{background:#00ba97}
-.m-widget-shopinfo .lessthan .percent{color:#00ba97}
+/* copy from taobao origin css */
+.my-widget-shopinfo .score{margin:3px 0;height:18px;white-space:nowrap}
+.my-widget-shopinfo .score .text{float:left;width:96px;color:#3c3c3c}
+.my-widget-shopinfo .score .highlight{float:left;padding:0 3px;color:#fff}
+.my-widget-shopinfo .score .percent{float:left;width:52px;text-align:right}
+.my-widget-shopinfo .morethan .highlight{background:#f40}
+.my-widget-shopinfo .morethan .percent{color:#f40}
+.my-widget-shopinfo .equalthan .highlight{background:#f40}
+.my-widget-shopinfo .equalthan .percent{color:#f40}
+.my-widget-shopinfo .lessthan .highlight{background:#00ba97}
+.my-widget-shopinfo .lessthan .percent{color:#00ba97}

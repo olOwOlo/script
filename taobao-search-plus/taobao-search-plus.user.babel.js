@@ -6,7 +6,7 @@
 // @description:zh-TW   淘寶搜索頁面自動加載店鋪評分，無需鼠標懸停查看！快速查看店鋪評分以及同行對比！ | 搜索頁面自定義排序方式與顯示方式
 // @description         Auto load shop information, customize the default sort order and ui style(gird or list).
 // @icon                https://www.taobao.com/favicon.ico
-// @version             1.2.0
+// @version             1.3.0
 // @author              olOwOlo
 // @namespace           https://olowolo.com
 // @homepage            https://github.com/olOwOlo/script/tree/master/taobao-search-plus
@@ -25,6 +25,7 @@
  * Released under the MIT License.
  * ***********************
  * ***** Release Note *****
+ * 1.3.0 - 适配“同款”与“相似”页面
  * 1.2.0 - 为兼容最新ECMAScript标准，使用babel与webpack处理脚本，可读性更好的源码可于Github查看
  */
 /******/ (function(modules) { // webpackBootstrap
@@ -1278,8 +1279,8 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
     myLog('The taobao-search-load-shop-info scrip start.');
     setTimeout(tryLoad, 500);
 
-    GM_addStyle('.my-shopinfo-grid{min-width:auto!important;padding:0 5px 5px!important;border:unset!important;-webkit-box-shadow:unset!important;box-shadow:unset!important}.my-shopinfo-grid .score-box{margin-left:5px;margin-top:auto!important;border-top:unset!important;padding:unset!important}.my-shopinfo-list{float:left;min-width:auto!important;padding:5px!important;border:unset!important;-webkit-box-shadow:unset!important;box-shadow:unset!important}.my-shopinfo-list .score-box{margin-top:auto!important;border-top:unset!important;padding:unset!important}.m-itemlist .items .item.J_MouserOnverReq{height:425px!important}@media(max-width:1250px){.my-shopinfo-grid .score{text-align:center}.my-shopinfo-grid .score .percent{float:none!important}.m-itemlist .items .item.J_MouserOnverReq{height:390px!important}}');
-    GM_addStyle('.m-widget-shopinfo .score{margin:3px 0;height:18px;white-space:nowrap}  .m-widget-shopinfo .score .text{float:left;width:96px;color:#3c3c3c}.m-widget-shopinfo .score .highlight{float:left;padding:0 3px;color:#fff}  .m-widget-shopinfo .score .percent{float:left;width:52px;text-align:right}.m-widget-shopinfo .morethan .highlight{background:#f40}.m-widget-shopinfo .morethan .percent{color:#f40}.m-widget-shopinfo .equalthan .highlight{background:#f40}  .m-widget-shopinfo .equalthan .percent{color:#f40}.m-widget-shopinfo .lessthan .highlight{background:#00ba97}.m-widget-shopinfo .lessthan .percent{color:#00ba97}');
+    GM_addStyle('.my-shopinfo-grid,.my-shopinfo-alike{padding:0 5px 5px}.my-shopinfo-grid .score-box,.my-shopinfo-alike .score-box{margin-left:5px}.my-shopinfo-list,.my-shopinfo-same{float:left;padding:5px}.m-itemlist .items .item.J_MouserOnverReq{height:425px!important}@media(max-width:1250px){.my-shopinfo-grid .score{text-align:center}.my-shopinfo-grid .score .percent{float:none!important}.m-itemlist .items .item.J_MouserOnverReq{height:390px!important}}');
+    GM_addStyle('.my-widget-shopinfo .score{margin:3px 0;height:18px;white-space:nowrap}.my-widget-shopinfo .score .text{float:left;width:96px;color:#3c3c3c}.my-widget-shopinfo .score .highlight{float:left;padding:0 3px;color:#fff}.my-widget-shopinfo .score .percent{float:left;width:52px;text-align:right}.my-widget-shopinfo .morethan .highlight{background:#f40}.my-widget-shopinfo .morethan .percent{color:#f40}.my-widget-shopinfo .equalthan .highlight{background:#f40}.my-widget-shopinfo .equalthan .percent{color:#f40}.my-widget-shopinfo .lessthan .highlight{background:#00ba97}.my-widget-shopinfo .lessthan .percent{color:#00ba97}');
 
     var handleTaskRuning = false;
     var taskQueue = [];
@@ -1318,20 +1319,38 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
      * @returns {*}
      */
     function getItemsAndPageState() {
-      var items = document.getElementsByClassName('item J_MouserOnverReq');
+      var items = document.getElementsByClassName('item J_MouserOnverReq'); // 网格形式
       if (items.length !== 0) {
         return { items: items, state: 'grid' };
       } else if ((items = document.getElementsByClassName('item g-clearfix')).length !== 0) {
+        // 列表形式
         return { items: items, state: 'list' };
+      } else if ((items = document.getElementsByClassName('recitem g-clearfix')).length !== 0) {
+        // 同款搜索
+        return { items: items, state: 'same' };
+      } else if ((items = document.querySelectorAll('#i2i-recitem .m-samestyleitem .item')).length !== 0) {
+        // 相似搜索
+        return { items: items, state: 'alike' };
       } else {
         return {};
       }
+    }
+
+    function getIdFromShopLink(shopLink) {
+      var lastEquationIndex = shopLink.lastIndexOf('=');
+      return shopLink.slice(lastEquationIndex + 1);
     }
 
     function getShopId(item) {
       var shopInfo = void 0;
       if ((shopInfo = item.getElementsByClassName('J_ShopInfo')).length !== 0 || (shopInfo = item.getElementsByClassName('dsr-old J_Dsr')).length !== 0) {
         return shopInfo[0].getAttribute('data-userid');
+      } else if ((shopInfo = item.getElementsByClassName('info1__shoplink')).length !== 0) {
+        // 同款搜索
+        return getIdFromShopLink(shopInfo[0].getAttribute('href'));
+      } else if ((shopInfo = item.getElementsByClassName('info__shopname')).length !== 0) {
+        // 相似搜索
+        return getIdFromShopLink(shopInfo[0].getAttribute('href'));
       } else if (item.getElementsByClassName('fake-line').length !== 0) {
         fakeElementQueue.push(item);
         return null;
@@ -1370,17 +1389,33 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
      * 创建店铺信息元素
      * @param itemElement
      * @param shopInfo
-     * @param state grid or list
+     * @param state: grid, list, same, alike
      */
     function createShopInfoElement(itemElement, shopInfo, state) {
       var SMALL_LAPTOP = document.body.scrollWidth <= 1250;
-      var highlightFormat = state === 'grid' && !SMALL_LAPTOP ? '均值' : '比同行均值';
+      var highlightFilter = (state === 'grid' || state === 'alike') && !SMALL_LAPTOP ? '均值' : '比同行均值';
 
       var shopInfoElement = document.createElement('div');
-      shopInfoElement.setAttribute('class', 'm-widget-shopinfo my-shopinfo-' + state);
-      shopInfoElement.innerHTML = '<div class="score-box"><ul class="scores">\n       <li class="score ' + shopInfo.descriptionCompared.class + '">\n         <span class="text">\u5982\u5B9E\u63CF\u8FF0\uFF1A' + shopInfo.matchDescription + '</span>\n         <span class="highlight">' + shopInfo.descriptionCompared.text.replace(highlightFormat, '') + '</span>\n         <span class="percent">' + shopInfo.descriptionCompared.rate + '</span>\n       </li>\n       <li class="score ' + shopInfo.attitudeCompared.class + '">\n         <span class="text">\u670D\u52A1\u6001\u5EA6\uFF1A' + shopInfo.serviceAttitude + '</span>\n         <span class="highlight">' + shopInfo.attitudeCompared.text.replace(highlightFormat, '') + '</span>\n         <span class="percent">' + shopInfo.attitudeCompared.rate + '</span>\n       </li>\n       <li class="score ' + shopInfo.deliveryCompared.class + '">\n         <span class="text">\u7269\u6D41\u670D\u52A1\uFF1A' + shopInfo.deliverySpeed + '</span>\n         <span class="highlight">' + shopInfo.deliveryCompared.text.replace(highlightFormat, '') + '</span>\n         <span class="percent">' + shopInfo.deliveryCompared.rate + '</span>\n       </li></ul></div>';
+      shopInfoElement.setAttribute('class', 'my-widget-shopinfo my-shopinfo-' + state);
+      shopInfoElement.innerHTML = '<div class="score-box"><ul class="scores">\n       <li class="score ' + shopInfo.descriptionCompared.class + '">\n         <span class="text">\u5982\u5B9E\u63CF\u8FF0\uFF1A' + shopInfo.matchDescription + '</span>\n         <span class="highlight">' + shopInfo.descriptionCompared.text.replace(highlightFilter, '') + '</span>\n         <span class="percent">' + shopInfo.descriptionCompared.rate + '</span>\n       </li>\n       <li class="score ' + shopInfo.attitudeCompared.class + '">\n         <span class="text">\u670D\u52A1\u6001\u5EA6\uFF1A' + shopInfo.serviceAttitude + '</span>\n         <span class="highlight">' + shopInfo.attitudeCompared.text.replace(highlightFilter, '') + '</span>\n         <span class="percent">' + shopInfo.attitudeCompared.rate + '</span>\n       </li>\n       <li class="score ' + shopInfo.deliveryCompared.class + '">\n         <span class="text">\u7269\u6D41\u670D\u52A1\uFF1A' + shopInfo.deliverySpeed + '</span>\n         <span class="highlight">' + shopInfo.deliveryCompared.text.replace(highlightFilter, '') + '</span>\n         <span class="percent">' + shopInfo.deliveryCompared.rate + '</span>\n       </li></ul></div>';
 
-      state === 'grid' ? itemElement.appendChild(shopInfoElement) : itemElement.getElementsByClassName('col col-5')[0].appendChild(shopInfoElement);
+      switch (state) {
+        case 'grid':
+          itemElement.appendChild(shopInfoElement);
+          break;
+        case 'list':
+          itemElement.getElementsByClassName('col col-5')[0].appendChild(shopInfoElement);
+          break;
+        case 'same':
+          itemElement.insertBefore(shopInfoElement, itemElement.getElementsByClassName('recitem__info5')[0]);
+          break;
+        case 'alike':
+          itemElement.getElementsByClassName('item__wrap')[0].appendChild(shopInfoElement);
+          break;
+        default:
+          myLog('Unsupported state.');
+          break;
+      }
     }
 
     function sleep(ms) {
