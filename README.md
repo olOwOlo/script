@@ -25,5 +25,3 @@
 [GreasyFork安装地址](https://greasyfork.org/zh-CN/scripts/32008-pixiv搜索结果排序-pixiv-search-sort)
 
 [./pixiv-search-sort](./pixiv-search-sort)
-## Licence:
-Released under the [MIT](https://opensource.org/licenses/MIT) License.

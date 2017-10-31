@@ -1,0 +1,27 @@
+#e-view-container,
+#e-view-control {
+  background: #EDEBDF;
+  border: 1px solid #5C0D12;
+  width: 99%;
+  min-width: 720px;
+  max-width: 1200px;
+  margin: 10px auto;
+  clear: both;
+  padding: 5px;
+  border-radius: 9px;
+  text-align: center;
+}
+
+#e-view-container .e-view-img-container {
+  margin-bottom: .5rem;
+}
+
+#e-view-container img {
+  max-width: 100%;
+}
+
+#e-view-container .e-view-page-index {
+  font-weight: bold;
+  font-size: 14px;
+  padding: .5rem;
+}
