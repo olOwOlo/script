@@ -4,7 +4,7 @@
 // @description         Pixiv搜索结果按收藏数从大到小排序，适配[TS] Pixiv++ V3 | Pixiv search result sort by bookmark count.
 // @description:zh-TW   Pixiv搜索結果按收藏數從大到小排序，適配[TS] Pixiv++ V3 | Pixiv search result sort by bookmark count.
 // @icon                https://www.pixiv.net/favicon.ico
-// @version             0.4.0
+// @version             0.4.1
 // @author              olOwOlo
 // @namespace           https://olowolo.com
 // @homepage            https://github.com/olOwOlo/script/tree/master/pixiv-search-sort
@@ -20,6 +20,7 @@
  * Released under the MIT License.
  * ***********************
  * ***** Release Note *****
+ * 0.4.1 - 修复：P 站更新
  * 0.4.0 - P站已更新，现在只支持单页排序
  * 0.3.0 - 为兼容最新ECMAScript标准，使用babel与webpack处理脚本，可读性更好的源码可于Github查看
  */
@@ -34,7 +35,7 @@
    * @param rest
    */
   function sortInContainer (index, rest = 6) {
-    const containers = document.getElementsByClassName('_2xrGgcY')
+    const containers = document.querySelectorAll('#js-react-search-mid > div')
     if (containers.length !== 0) {
       const container = containers[index]
       const itemsArray = Array.from(container.children)
